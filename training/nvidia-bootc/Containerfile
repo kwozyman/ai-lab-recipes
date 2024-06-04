@@ -88,6 +88,8 @@ ENV TARGETARCH=${TARGET_ARCH}
 
 ARG EXTRA_RPM_PACKAGES=''
 
+ARG NON_NVIDIA_ONLY=false
+
 # Disable vGPU version compatibility check by default
 ARG DISABLE_VGPU_VERSION_CHECK=true
 ENV DISABLE_VGPU_VERSION_CHECK=$DISABLE_VGPU_VERSION_CHECK
@@ -102,7 +104,7 @@ RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 COPY nvidia-toolkit-firstboot.service /usr/lib/systemd/system/nvidia-toolkit-firstboot.service
 
 COPY --chmod=755 taint.sh /usr/bin/rhelai-nvidia-install.sh
-RUN /usr/bin/rhelai-nvidia-install.sh
+RUN if [ "${NON_NVIDIA_ONLY}" = false ]; then /usr/bin/rhelai-nvidia-install.sh; fi
 
 ARG SSHPUBKEY
 
