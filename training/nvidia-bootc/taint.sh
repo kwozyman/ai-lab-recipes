@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ "${TARGET_ARCH}" == "" ]; then
     export TARGET_ARCH="$(arch)"
 fi
